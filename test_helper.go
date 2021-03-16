@@ -59,11 +59,11 @@ func Ensure(a interface{}) error {
 	switch field.Kind() {
 	case reflect.Slice:
 		if reflect.ValueOf(field.Interface()).Len() == 0 {
-			return fmt.Errorf(fmt.Sprintf("Slice is zero"))
+			return fmt.Errorf("Slice is zero")
 		}
 	default:
-		if reflect.Zero(field.Type()).Interface() == field.Interface() {
-			return fmt.Errorf(fmt.Sprintf("Property is zero"))
+		if field.IsZero() {
+			return fmt.Errorf("Property is zero")
 		}
 	}
 

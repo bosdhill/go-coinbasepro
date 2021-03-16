@@ -1,9 +1,5 @@
 package coinbasepro
 
-import (
-	"fmt"
-)
-
 type Fees struct {
 	MakerFeeRate string `json:"maker_fee_rate"`
 	TakerFeeRate string `json:"taker_fee_rate"`
@@ -13,7 +9,6 @@ type Fees struct {
 func (c *Client) GetFees() (Fees, error) {
 	var fees Fees
 
-	url := fmt.Sprintf("/fees")
-	_, err := c.Request("GET", url, nil, &fees)
+	_, err := c.Request("GET", "/fees", nil, &fees)
 	return fees, err
 }
