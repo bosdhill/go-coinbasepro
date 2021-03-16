@@ -2,7 +2,7 @@ language: go
 go:
 - tip
 script:
-- '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && go test ./...'
+- '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && go test -v ./...'
 env:
   global:
   - secure: ZO+o2eNFkCWVKkBebi0s93DHJ2mZ3E64/MZnwAcwTSNLt0uZPVLqbdolQLYtH15rKFUhiKofJXxDj/OrUgRFMZzSGpk/ZTkdlMRNi4rWRiFmfAKKQgh1Mq1n76d8U7oa8jW/qH4ABhT+vEhR284FPIrILGRoVXsd/HerVNrDvNhwXJYD2mJuLOGVRpq3Jgf3W6oldQDQBRD/gOLDnxnkhy1WDwueHfq4WNr3Ay9hbvT3bS9RlhWxdo7vkARsyKGtG7dF9v91Fp1VKE/lClR00C6smf+tTZz+UDQIIHzw+dVhyg5iWy40lkqW1bf6kYlT+H+2lKT0UD2jzfpw9Oriy+Sb6eFyNqx9/x5Tl69zkJLeO03teiQsfsoyD63VbTDOtwNnd6jAAG9COWTuEbvGBLF6SlVBB5q6TW0oCZ4MusLwod2n+vLm9uT3sZ0lvgP0FvGgfKZO5a3tovGDIrOiKpEXFqV1dyTfcvO8mAm3xz+OFCCmhKA9tdgAOedk/CpS0Dy/QnyViCuDa5o/rlbtWqdY8ufnfZOByYEYg1Y5E2nrLf5earW8hm2kQtsbut76RXazRS2AbQ6m9rkVAuMafH9eI6qasTHWvh5zVmBrb6NKRyFAV5NChYyw2H8ExfQ2fi5g5BPbFeBZrNMSJO+qLEWFHiuSUYYIa0HZ+4gdYTc=
