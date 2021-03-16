@@ -27,11 +27,9 @@ func NewTestWebsocketClient() (*ws.Conn, error) {
 func StructHasZeroValues(i interface{}) bool {
 	iv := reflect.ValueOf(i)
 
-	//values := make([]interface{}, v.NumField())
-
 	for i := 0; i < iv.NumField(); i++ {
 		field := iv.Field(i)
-		if reflect.Zero(field.Type()).Interface() == field.Interface() {
+		if field.IsZero() {
 			return true
 		}
 	}

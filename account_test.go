@@ -39,6 +39,39 @@ func TestGetAccount(t *testing.T) {
 		}
 	}
 }
+
+func TestGetCoinbaseAccounts(t *testing.T) {
+	client := NewTestClient()
+	accounts, err := client.GetCoinbaseAccounts()
+	if err != nil {
+		t.Error(err)
+	}
+
+	if len(accounts) == 0 {
+		t.Error(errors.New("No accounts found"))
+	}
+
+	sandboxAccounts := map[string]int{
+		"Fake":          1,
+		"All the Ether": 1,
+		"USDC Wallet":   1,
+		"BAT Wallet":    1,
+		"EUR Wallet":    1,
+		"GBP Wallet":    1,
+		"Zero Hero":     1,
+		"LINK Wallet":   1,
+	}
+
+	var totalNames int
+	for _, a := range accounts {
+		totalNames += sandboxAccounts[a.Name]
+	}
+
+	if totalNames != len(sandboxAccounts) {
+		t.Error(errors.New("Wrong sandbox account names"))
+	}
+}
+
 func TestListAccountLedger(t *testing.T) {
 	var ledgers []LedgerEntry
 	client := NewTestClient()
