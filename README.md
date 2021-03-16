@@ -1,4 +1,4 @@
-Go Coinbase Pro [![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/preichenberger/go-coinbasepro) [![Build Status](https://travis-ci.org/preichenberger/go-coinbasepro.svg?branch=master)](https://travis-ci.org/preichenberger/go-coinbasepro)
+Go Coinbase Pro [![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/preichenberger/go-coinbasepro) [![Build Status](https://api.travis-ci.org/bosdhill/go-coinbasepro.svg?branch=master)](https://travis-ci.org/bosdhill/go-coinbasepro)
 ========
 
 ## Summary
