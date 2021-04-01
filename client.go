@@ -3,11 +3,15 @@ package coinbasepro
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math"
 	"net/http"
+	"net/url"
 	"os"
+	"reflect"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -73,13 +77,13 @@ func (c *Client) UpdateConfig(config *ClientConfig) {
 	}
 }
 
-func (c *Client) Request(method string, url string,
-	params, result interface{}) (res *http.Response, err error) {
+func (c *Client) Request(method, path string,
+	params, body, result interface{}) (res *http.Response, err error) {
 	for i := 0; i < c.RetryCount+1; i++ {
 		retryDuration := time.Duration((math.Pow(2, float64(i))-1)/2*1000) * time.Millisecond
 		time.Sleep(retryDuration)
 
-		res, err = c.request(method, url, params, result)
+		res, err = c.request(method, path, params, body, result)
 		if res != nil && res.StatusCode == 429 {
 			continue
 		} else {
@@ -90,22 +94,54 @@ func (c *Client) Request(method string, url string,
 	return res, err
 }
 
-func (c *Client) request(method string, url string,
-	params, result interface{}) (res *http.Response, err error) {
-	var data []byte
-	body := bytes.NewReader(make([]byte, 0))
+func encodeParams(params interface{}) (string, error) {
+	p := url.Values{}
+	v := reflect.Indirect(reflect.ValueOf(params))
+	t := v.Type()
+	for i := 0; i < t.NumField(); i++ {
+		name := t.Field(i).Name
+		field := v.FieldByName(name)
+		if !field.IsZero() {
+			value, ok := v.FieldByName(name).Interface().(string)
+			if !ok {
+				return "", errors.New("could not encode params")
+			}
+			p.Add(strings.ToLower(name), value)
+		}
+	}
+	return p.Encode(), nil
+}
 
+func (c *Client) request(method, path string,
+	params, body, result interface{}) (res *http.Response, err error) {
 	if params != nil {
-		data, err = json.Marshal(params)
+		urlPath, err := url.Parse(path)
+		if err != nil {
+			return nil, err
+		}
+
+		query, err := encodeParams(params)
+		if err != nil {
+			return nil, err
+		}
+
+		urlPath.RawQuery = query
+		path = urlPath.String()
+	}
+
+	var data []byte
+	b := bytes.NewReader(make([]byte, 0))
+	if body != nil {
+		data, err = json.Marshal(body)
 		if err != nil {
 			return res, err
 		}
 
-		body = bytes.NewReader(data)
+		b = bytes.NewReader(data)
 	}
 
-	fullURL := fmt.Sprintf("%s%s", c.BaseURL, url)
-	req, err := http.NewRequest(method, fullURL, body)
+	fullURL := fmt.Sprintf("%s%s", c.BaseURL, path)
+	req, err := http.NewRequest(method, fullURL, b)
 	if err != nil {
 		return res, err
 	}
@@ -126,7 +162,7 @@ func (c *Client) request(method string, url string,
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("User-Agent", "Go Coinbase Pro Client 1.0")
 
-	h, err := c.Headers(method, url, timestamp, string(data))
+	h, err := c.Headers(method, path, timestamp, string(data))
 	if err != nil {
 		return res, err
 	}

@@ -1,7 +1,6 @@
 package coinbasepro
 
 import (
-	"encoding/json"
 	"fmt"
 )
 
@@ -88,7 +87,7 @@ type ListHoldsParams struct {
 // Client Funcs
 func (c *Client) GetAccounts() ([]Account, error) {
 	var accounts []Account
-	_, err := c.Request("GET", "/accounts", nil, &accounts)
+	_, err := c.Request("GET", "/accounts", nil, nil, &accounts)
 
 	return accounts, err
 }
@@ -97,14 +96,14 @@ func (c *Client) GetAccount(id string) (Account, error) {
 	account := Account{}
 
 	url := fmt.Sprintf("/accounts/%s", id)
-	_, err := c.Request("GET", url, nil, &account)
+	_, err := c.Request("GET", url, nil, nil, &account)
 	return account, err
 }
 
 func (c *Client) GetCoinbaseAccounts() ([]CoinbaseAccount, error) {
 	var accounts []CoinbaseAccount
 
-	_, err := c.Request("GET", "/coinbase-accounts/", nil, &accounts)
+	_, err := c.Request("GET", "/coinbase-accounts/", nil, nil, &accounts)
 	return accounts, err
 }
 
@@ -127,21 +126,4 @@ func (c *Client) ListHolds(id string, p ...ListHoldsParams) *Cursor {
 
 	return NewCursor(c, "GET", fmt.Sprintf("/accounts/%s/holds", id),
 		&paginationParams)
-}
-
-// String functions
-
-func (a CoinbaseAccount) String() string {
-	s, _ := json.MarshalIndent(a, "", "\t")
-	return string(s)
-}
-
-func (wd WireDepositInfo) String() string {
-	s, _ := json.MarshalIndent(wd, "", "\t")
-	return string(s)
-}
-
-func (sd SepaDepsoitInfo) String() string {
-	s, _ := json.MarshalIndent(sd, "", "\t")
-	return string(s)
 }

@@ -9,6 +9,6 @@ type Fees struct {
 func (c *Client) GetFees() (Fees, error) {
 	var fees Fees
 
-	_, err := c.Request("GET", "/fees", nil, &fees)
+	_, err := c.Request("GET", "/fees", nil, nil, &fees)
 	return fees, err
 }

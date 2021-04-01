@@ -13,6 +13,6 @@ type Conversion struct {
 func (c *Client) CreateConversion(newConversion *Conversion) (Conversion, error) {
 	var savedConversion Conversion
 
-	_, err := c.Request("POST", "/conversions", newConversion, &savedConversion)
+	_, err := c.Request("POST", "/conversions", nil, newConversion, &savedConversion)
 	return savedConversion, err
 }

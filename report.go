@@ -32,7 +32,7 @@ func (c *Client) CreateReport(newReport *Report) (Report, error) {
 	var savedReport Report
 
 	url := fmt.Sprintf("/reports")
-	_, err := c.Request("POST", url, newReport, &savedReport)
+	_, err := c.Request("POST", url, nil, newReport, &savedReport)
 
 	return savedReport, err
 }
@@ -41,7 +41,7 @@ func (c *Client) GetReportStatus(id string) (Report, error) {
 	report := Report{}
 
 	url := fmt.Sprintf("/reports/%s", id)
-	_, err := c.Request("GET", url, nil, &report)
+	_, err := c.Request("GET", url, nil, nil, &report)
 
 	return report, err
 }

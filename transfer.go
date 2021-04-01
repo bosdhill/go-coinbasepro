@@ -1,9 +1,5 @@
 package coinbasepro
 
-import (
-	"fmt"
-)
-
 type Transfer struct {
 	Type              string `json:"type"`
 	Amount            string `json:"amount"`
@@ -13,7 +9,6 @@ type Transfer struct {
 func (c *Client) CreateTransfer(newTransfer *Transfer) (Transfer, error) {
 	var savedTransfer Transfer
 
-	url := fmt.Sprintf("/transfers")
-	_, err := c.Request("POST", url, newTransfer, &savedTransfer)
+	_, err := c.Request("POST", "/deposits/coinbase-account", nil, newTransfer, &savedTransfer)
 	return savedTransfer, err
 }

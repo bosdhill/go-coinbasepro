@@ -30,7 +30,7 @@ func (c *Cursor) Page(i interface{}, direction string) error {
 		url = fmt.Sprintf("%s?%s", c.URL, c.Pagination.Encode(direction))
 	}
 
-	res, err := c.Client.Request(c.Method, url, c.Params, i)
+	res, err := c.Client.Request(c.Method, url, nil, c.Params, i)
 	if err != nil {
 		c.HasMore = false
 		return err

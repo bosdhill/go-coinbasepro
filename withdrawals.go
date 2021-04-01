@@ -19,13 +19,13 @@ type WithdrawalCoinbase struct {
 func (c *Client) CreateWithdrawalCrypto(newWithdrawalCrypto *WithdrawalCrypto) (WithdrawalCrypto, error) {
 	var savedWithdrawal WithdrawalCrypto
 	url := fmt.Sprintf("/withdrawals/crypto")
-	_, err := c.Request("POST", url, newWithdrawalCrypto, &savedWithdrawal)
+	_, err := c.Request("POST", url, nil, newWithdrawalCrypto, &savedWithdrawal)
 	return savedWithdrawal, err
 }
 
 func (c *Client) CreateWithdrawalCoinbase(newWithdrawalCoinbase *WithdrawalCoinbase) (WithdrawalCoinbase, error) {
 	var savedWithdrawal WithdrawalCoinbase
 	url := fmt.Sprintf("/withdrawals/coinbase-account")
-	_, err := c.Request("POST", url, newWithdrawalCoinbase, &savedWithdrawal)
+	_, err := c.Request("POST", url, nil, newWithdrawalCoinbase, &savedWithdrawal)
 	return savedWithdrawal, err
 }

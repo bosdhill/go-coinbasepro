@@ -50,14 +50,13 @@ func (c *Client) CreateOrder(newOrder *Order) (Order, error) {
 		newOrder.Type = "limit"
 	}
 
-	url := fmt.Sprintf("/orders")
-	_, err := c.Request("POST", url, newOrder, &savedOrder)
+	_, err := c.Request("POST", "/orders", nil, newOrder, &savedOrder)
 	return savedOrder, err
 }
 
 func (c *Client) CancelOrder(id string) error {
 	url := fmt.Sprintf("/orders/%s", id)
-	_, err := c.Request("DELETE", url, nil, nil)
+	_, err := c.Request("DELETE", url, nil, nil, nil)
 	return err
 }
 
@@ -69,7 +68,7 @@ func (c *Client) CancelAllOrders(p ...CancelAllOrdersParams) ([]string, error) {
 		url = fmt.Sprintf("%s?product_id=%s", url, p[0].ProductID)
 	}
 
-	_, err := c.Request("DELETE", url, nil, &orderIDs)
+	_, err := c.Request("DELETE", url, nil, nil, &orderIDs)
 	return orderIDs, err
 }
 
@@ -77,7 +76,7 @@ func (c *Client) GetOrder(id string) (Order, error) {
 	var savedOrder Order
 
 	url := fmt.Sprintf("/orders/%s", id)
-	_, err := c.Request("GET", url, nil, &savedOrder)
+	_, err := c.Request("GET", url, nil, nil, &savedOrder)
 	return savedOrder, err
 }
 
